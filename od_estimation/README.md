@@ -1,65 +1,180 @@
-# 新西兰极端天气研究：OD 交通分配与反推
+# New Zealand Extreme Weather Research: OD Traffic Assignment and Inversion
 
-本仓库提供区域 OD 到节点 OD 的展开、MSA 用户均衡交通分配、区域 OD 迭代反推，以及 2019 年 12 月事件窗口的 real/cf 批量处理。公式、常数和输出行为沿用原研究脚本。
+This repository provides reproducible code and input data for regional origin–destination (OD) demand disaggregation, traffic assignment, and iterative OD inversion in a New Zealand extreme weather research project.
 
-初始 OD 是预计算输入 `data/region15_od_seed_from_gdp.csv`。仓库不包含生成该初始 OD 的代码。
+The implementation preserves the computational functions, formulas, constants, scenario order, and output conventions of the original research scripts. File paths are configurable so that the code can run independently of the original project directory.
 
-## 快速运行
+## Scope
 
-需要 Python 3.10 或以上版本。先在解压后的仓库目录打开终端，安装依赖：
+The workflow includes:
+
+1. Reading a precomputed regional OD seed matrix.
+2. Disaggregating regional OD demand into node-level OD demand using access-node weights.
+3. Performing traffic assignment using shortest paths, the Bureau of Public Roads (BPR) travel-time function, and the Method of Successive Averages (MSA).
+4. Updating regional OD demand using observed and simulated directional edge flows.
+5. Applying global demand scaling and the original stopping criteria.
+6. Processing real and counterfactual scenarios for the December 2019 event window.
+
+The initial OD seed is supplied as `data/region15_od_seed_from_gdp.csv`. **Code for generating the initial OD seed is not included.**
+
+Weather and traffic prediction, counterfactual edge-input generation, diagonal completion, multiregional input–output (MRIO) modelling, and dynamic economic loss simulation are outside the scope of this repository. The required edge inputs are provided as CSV files.
+
+## Requirements
+
+Python 3.10 or later is required.
+
+Install the dependencies from the repository root:
 
 ```console
 python -m pip install -r requirements.txt
 ```
 
-先复现已核对的单日案例（真实、反事实各一次）：
+The dependency versions in `requirements.txt` match the environment used for the reported validation.
+
+## Quick Start
+
+Run the validated single-day example for both real and counterfactual scenarios:
 
 ```console
 python -m nz_od --dates 2019-12-02 --scenarios real cf
+```
+
+Results are written to:
+
+```text
+results/
+└── 2019-12-02/
+    ├── real/
+    └── cf/
+```
+
+Compare the generated results with the bundled historical reference results:
+
+```console
 python verify.py
 ```
 
-结果写入 `results/2019-12-02/real` 和 `results/2019-12-02/cf`。验证成功时显示 54 个历史 CSV 比较通过。运行可能需要几分钟；保留了原脚本逐条最短路的计算方式。
+A successful check reports that all 71 bundled file hashes and all 54 historical CSV comparisons have passed.
 
-运行完整 7 天窗口（2019-12-02 至 2019-12-08，共 14 个案例）：
+Execution may take several minutes because the original shortest-path calculations are retained.
+
+## Full Event Window
+
+To process all seven days from 2 to 8 December 2019:
 
 ```console
 python -m nz_od --output results_full
 ```
 
-运行第二阶段 S9 基线反推：
+The default workflow processes each date in chronological order, running `real` first and `cf` second, for a total of 14 cases.
+
+To run the baseline OD inversion workflow:
 
 ```console
 python -m nz_od --mode baseline --output results_baseline
 ```
 
-每次使用空输出目录，避免覆盖已有结果。输入数据默认从仓库内 data/ 读取，也可用 `--data-dir` 指定其他目录。不需要原电脑的 D: 或 E: 盘路径。
+Use an empty output directory for each run. The command refuses to overwrite a non-empty output directory.
 
-## 文件结构
+Input files are read from the bundled `data/` directory by default. An alternative input directory can be supplied using `--data-dir`.
 
-- `nz_od/`：分配与反推代码，以及命令行入口。
-- `data/`：3 个公共输入 CSV，以及 201912/ 下的 14 个每日边输入 CSV。
-- `reference_results/`：2019-12-02 real/cf 的 54 个原研究结果 CSV，用于独立比较。
-- `verify.py`：检查随附文件的 SHA-256，并将运行结果逐文件与历史结果比较。
-- `requirements.txt`：本次验证使用的依赖版本。
-- `provenance.json`：原脚本相对路径与 SHA-256。
-- `data_manifest.json`：输入数据、参考结果的文件清单与 SHA-256。
-- `validation.json`：整理初版时完成的函数一致性与历史结果检查记录。
+## Repository Structure
 
-## 算法与行为
+```text
+.
+├── README.md
+├── requirements.txt
+├── provenance.json
+├── data_manifest.json
+├── validation.json
+├── verify.py
+├── nz_od/
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── baseline.py
+│   └── event.py
+├── data/
+│   ├── region15_od_seed_from_gdp.csv
+│   ├── region15_access_nodes_main_component.csv
+│   ├── edge_input_daily_with_ferry.csv
+│   └── 201912/
+│       ├── edge_input_real_2019-12-02.csv
+│       ├── edge_input_cf_2019-12-02.csv
+│       └── ...
+└── reference_results/
+    └── 2019-12-02/
+        ├── real/
+        └── cf/
+```
 
-保留 BPR alpha=0.15、beta=4.0，容量下限 1e-6；MSA 步长 1/it，UE 最多 50 次，相对间隙阈值 1e-4；OD 外层最多 5 次，更新指数 0.20，因子范围 0.50–1.50，EPS=1e-6，每轮总量缩放，两个外层停止阈值均为 0.01。
+- `nz_od/baseline.py`: baseline traffic assignment and OD inversion functions extracted from the original second-stage S9 script.
+- `nz_od/event.py`: event-window traffic assignment and OD inversion functions extracted from the original Step3 script configured for December 2019.
+- `nz_od/__main__.py`: command-line interface and portable path configuration.
+- `data/`: three shared input CSV files and 14 daily scenario-specific edge-input CSV files.
+- `reference_results/`: 54 historical output CSV files for the validated single-day example.
+- `verify.py`: bundled-file integrity checks and numerical comparisons against the reference results.
+- `provenance.json`: original source-script identifiers and SHA-256 hashes.
+- `data_manifest.json`: bundled input and reference-result file paths, sizes, and SHA-256 hashes.
+- `validation.json`: recorded function-consistency and numerical validation results.
 
-保留原 DiGraph 的平行边覆盖行为、不可达 OD 跳过方式、缺失值处理、对角线置零以及运算顺序。默认日期、每个日期 real 然后 cf 的顺序均与原 Step3 一致。
+## Computational Settings
 
-逐轮输出包括节点 OD、边流量、UE 日志、区域因子、区域 OD，以及最终 OD、迭代汇总、批处理汇总；文件名、列和 UTF-8 BOM 格式沿用原脚本。批处理汇总中的路径取决于运行位置。最后一轮边流量对应该轮 OD 更新之前的分配，保持原行为。
+The original settings are retained:
 
-## 验证范围
+| Parameter | Value |
+|---|---:|
+| BPR alpha | 0.15 |
+| BPR beta | 4.0 |
+| Minimum directional capacity | 1e-6 |
+| MSA step size at iteration `it` | `1 / it` |
+| Maximum UE iterations | 50 |
+| UE relative-gap tolerance | 1e-4 |
+| Maximum outer OD iterations | 5 |
+| OD update exponent | 0.20 |
+| Minimum adjustment factor | 0.50 |
+| Maximum adjustment factor | 1.50 |
+| Numerical stabilizer, EPS | 1e-6 |
+| Global scaling at each outer iteration | Enabled |
+| Factor-mean stopping tolerance | 0.01 |
+| OD-total-ratio stopping tolerance | 0.01 |
 
-2019-12-02 real/cf 的全部 54 个 CSV 已与历史结果比较通过（rtol=atol=1e-10）；event、baseline 模块提取的函数体已与原脚本核对一致。其余 6 天与 baseline 尚未做完整历史结果重跑。完整窗口输入已随附，但不据此声称全部案例验证通过。
+The implementation also retains the original handling of missing values, unreachable OD pairs, diagonal entries, and operation order.
 
-本仓库覆盖 OD 分配与反推，不包括后续对角线补全、MRIO 或经济动态模拟。S9 在这里特指第二阶段New/S9迭代.py，S6UE.py 为交通分配参考来源。
+The original `DiGraph` behaviour for parallel edges is preserved: later entries for the same directed node pair overwrite earlier entries.
 
-## 上传 GitHub
+## Outputs
 
-将本 README 所在目录中的全部文件和子目录上传到仓库根目录，包括 data/ 与 reference_results/。无需上传压缩包本身、运行生成的 results/、Python 缓存或整个原始研究项目。
+Each case produces the original per-iteration outputs:
+
+- Node-level OD demand.
+- Directional edge flows and travel times.
+- UE iteration logs.
+- Regional adjustment factors.
+- Updated regional OD demand.
+- Final regional OD demand.
+- An outer-iteration summary.
+
+The event workflow also produces `batch_od_inversion_summary.csv`.
+
+Original output filenames, columns, and UTF-8 BOM encoding are retained. Path fields in the batch summary depend on the selected input and output locations.
+
+As in the original workflow, the edge-flow output from the last outer iteration corresponds to the OD demand before that iteration’s OD update.
+
+## Validation
+
+The portable package was rerun using only the bundled input data for:
+
+- `2019-12-02 / real`
+- `2019-12-02 / cf`
+
+All 54 case-level CSV outputs matched the historical reference results within a relative tolerance of `1e-10` and an absolute tolerance of `1e-10`. All 71 bundled input and reference-result files passed SHA-256 integrity checks.
+
+The extracted function bodies in the baseline and event modules were also checked against the original source scripts and found to be identical at the abstract syntax tree level.
+
+The remaining six event dates and the baseline workflow have not undergone a complete historical-output rerun. Their inclusion does not imply that all cases have been numerically validated.
+
+## Data and Reproducibility Boundary
+
+The precomputed initial OD seed and scenario-specific edge inputs are treated as fixed inputs to this workflow. Reproducing their upstream generation is outside the scope of this repository.
+
+This repository reproduces the OD assignment and inversion stage, from the supplied seed and edge inputs to the updated regional OD outputs.
