@@ -73,8 +73,6 @@ Two predictions are generated using the same trained model:
 
 The normalized future-weather input, `x_future`, remains unchanged. Only selected values in `x_future_raw` are replaced.
 
-Labeling and analysis use different event windows. Both original definitions are preserved and documented in [Code Notes](docs/CODE_AUDIT.md).
-
 ## Outputs
 
 Outputs are saved under `artifacts/` by default:
