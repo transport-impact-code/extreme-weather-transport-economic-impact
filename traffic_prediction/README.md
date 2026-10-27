@@ -85,8 +85,6 @@ Outputs are saved under `artifacts/` by default:
 - Real-weather and counterfactual predictions
 - Impact summaries and comparison plots
 
-See [OD Integration](docs/OD_INTEGRATION.md) for the requirements for connecting station-level predictions to `od_estimation`.
-
 ## Validation
 
 Run the checks with:
