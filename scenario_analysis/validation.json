@@ -1,0 +1,216 @@
+{
+  "date_local": "2026-10-27",
+  "status": "source_release_ready_with_documented_partial_numerical_validation",
+  "source_count": 11,
+  "supporting_source_count": 3,
+  "source_comparison": [
+    {
+      "file": "S2提取窗口期间流量.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S3生成反推边(1).py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S4批量跑反推(1).py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S5补对角线.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S6冲击.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S7每一期OD.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S8每个变化表.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S9动态模拟最新.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "库存.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "平均库存值.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "S1生成三种强度.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "model.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "统一MRIO顺序.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    },
+    {
+      "file": "计算初始行业库存.py",
+      "functions_and_classes_ast_equal_ignoring_strings": true,
+      "numeric_literal_parameters_equal": true,
+      "original_bytes_unchanged": true
+    }
+  ],
+  "tests": {
+    "unittest_count": 14,
+    "passed": 14,
+    "execution": "python -m unittest discover -s tests -v",
+    "environment": {
+      "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+      "packages": {
+        "numpy": "2.3.5",
+        "pandas": "3.0.1"
+      },
+      "missing": [
+        "torch",
+        "networkx",
+        "matplotlib"
+      ]
+    },
+    "failed": 0,
+    "skipped": 0
+  },
+  "executed_stages": [
+    "S2 (12 intensity/month cases)",
+    "S3",
+    "S5 (126 OD result inputs)",
+    "S6 (63 available intensity/day cases)",
+    "S7",
+    "S8",
+    "inventory",
+    "inventory_variants",
+    "inventory_level1",
+    "order (full MRIO label audit region-major)",
+    "S9 (3 intensities x365 periods; --no-plots)"
+  ],
+  "test_inputs": "Existing S1 prediction NPZ and S4 final OD matrices; local original files read-only; outputs saved in workspace",
+  "historical_comparison_scope": "Numeric CSV columns and complete matched NPY arrays, tolerances rtol=atol=1e-10; metadata strings, paths and H1/H0 labels excluded",
+  "historical_comparisons": {
+    "S2": {
+      "historical_csv_comparisons": 12,
+      "max_abs_numeric_difference": 0.0,
+      "failures": []
+    },
+    "S3": {
+      "historical_csv_comparisons": 138,
+      "max_abs_numeric_difference": 0.0,
+      "failures": []
+    },
+    "S5": {
+      "historical_csv_comparisons": 126,
+      "max_abs_numeric_difference": 0.0,
+      "failures": []
+    },
+    "S6": {
+      "historical_csv_comparisons": 695,
+      "max_abs_numeric_difference": 4.547473508864641e-13,
+      "failures": []
+    },
+    "S7": {
+      "historical_npy_comparisons": 30,
+      "max_abs_numeric_difference": 0.0,
+      "failures": []
+    },
+    "S8": {
+      "historical_npy_comparisons": 15,
+      "max_abs_numeric_difference": 5.551115123125783e-17,
+      "failures": []
+    },
+    "inventory_level1": {
+      "historical_csv_comparisons": 1,
+      "max_abs_numeric_difference": 0.0
+    },
+    "S9": {
+      "I1": {
+        "computed_shape": [
+          365,
+          285
+        ],
+        "finite_outputs": true,
+        "nonnegative_outputs": true,
+        "max_column_balance_error": 2.1827872842550278e-11,
+        "max_row_balance_error": 1.4551915228366852e-11,
+        "annual_loss_percent": 0.1179957311029099
+      },
+      "I2": {
+        "computed_shape": [
+          365,
+          285
+        ],
+        "finite_outputs": true,
+        "nonnegative_outputs": true,
+        "max_column_balance_error": 2.1827872842550278e-11,
+        "max_row_balance_error": 1.4551915228366852e-11,
+        "annual_loss_percent": 0.1654354586787243
+      },
+      "I3": {
+        "computed_shape": [
+          365,
+          285
+        ],
+        "finite_outputs": true,
+        "nonnegative_outputs": true,
+        "max_column_balance_error": 2.1827872842550278e-11,
+        "max_row_balance_error": 1.4551915228366852e-11,
+        "annual_loss_percent": 0.1938712133185569
+      }
+    }
+  },
+  "identical_od_function_ast": [
+    "aon_load",
+    "build_graph",
+    "calc_tstt",
+    "ensure_required_columns",
+    "expand_region_to_node_od",
+    "global_scale_region_od"
+  ],
+  "shared_model_bytes_identical_to_traffic_prediction": true,
+  "unverified": [
+    "S1 neural inference and trained-weight compatibility execution",
+    "S4 network assignment/OD inversion execution",
+    "Official 2019-12-01 coverage (absent)",
+    "Independent historical checked-sector-major S9 reference",
+    "Scientific validity of inventory sector matching and median imputation",
+    "GUI plotting and complete dependency installation"
+  ],
+  "remote_changes": false,
+  "source_project_writes": false
+}

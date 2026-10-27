@@ -1,0 +1,85 @@
+{
+  "data_root": "data",
+  "paths_by_stage": {
+    "S2": {
+      "SCENARIO_ROOT": null,
+      "S1_ROOT": null,
+      "OUT_ROOT": null
+    },
+    "S3": {
+      "SCENARIO_ROOT": null,
+      "DAILY_ROOT": null,
+      "OUT_ROOT": null,
+      "NODE_EDGE_MAP_CSV": null,
+      "EDGE_OBS_CSV": null,
+      "EDGE_TEMPLATE_CSV": null
+    },
+    "S4": {
+      "SCENARIO_ROOT": null,
+      "EDGE_INPUT_ROOT": null,
+      "OUT_ROOT": null,
+      "OD_BASE_DIR": null,
+      "ACCESS_CSV": null,
+      "INITIAL_REGION_OD_CSV": null
+    },
+    "S5": {
+      "SCENARIO_ROOT": null,
+      "OD_ROOT": null,
+      "OUT_ROOT": null,
+      "REGION_ORDER_CSV": null
+    },
+    "S6": {
+      "SCENARIO_ROOT": null,
+      "S5_ROOT": null,
+      "OUT_ROOT": null
+    },
+    "S7": {
+      "SCENARIO_ROOT": null,
+      "S6_ROOT": null,
+      "OUT_ROOT": null
+    },
+    "S8": {
+      "SCENARIO_ROOT": null,
+      "S7_ROOT": null,
+      "OUT_ROOT": null,
+      "MRIO_PATH_CANDIDATES": null
+    },
+    "S9": {
+      "SCENARIO_ROOT": null,
+      "INPUT_ROOT_CANDIDATES": null,
+      "STOCK_DAYS_CSV": null
+    },
+    "inventory": {
+      "AES_PATH": null,
+      "MRIO_PATH": null,
+      "OUT_DIR": null
+    },
+    "inventory_variants": {
+      "SCENARIO_ROOT": null,
+      "BASE_STOCK_CSV": null,
+      "OUT_LOW_DIR": null,
+      "OUT_MIDDLE_DIR": null,
+      "OUT_HIGH_DIR": null
+    },
+    "S1": {
+      "SAMPLE_ROOT": null,
+      "ADJ_PATH": null,
+      "CKPT_PATH": null,
+      "NORM_PATH": null,
+      "OUT_ROOT": null
+    },
+    "model": {},
+    "order": {
+      "SCENARIO_ROOT": null,
+      "STEP8_ROOT_CANDIDATES": null,
+      "MRIO_PATH_CANDIDATES": null
+    },
+    "inventory_level1": {
+      "SCENARIO_ROOT": null,
+      "AES_PATH": null,
+      "OUT_DIR": null,
+      "SECTOR_NAMES_CANDIDATES": null
+    }
+  },
+  "shared_model_path": null
+}
