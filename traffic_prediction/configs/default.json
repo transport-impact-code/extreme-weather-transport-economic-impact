@@ -1,0 +1,24 @@
+{
+  "label": {
+    "INPUT_DIR": "data/weather_flow_month",
+    "OUTPUT_DIR": "artifacts/labeled"
+  },
+  "samples": {
+    "DATA_DIR": "artifacts/labeled",
+    "NODE_FILE": "data/site_locations_130.csv",
+    "SAVE_DIR": "artifacts/samples"
+  },
+  "train": {
+    "SAMPLES_DIR": "artifacts/samples",
+    "ADJ_PATH": "data/adjacency_distance_130x130_exp.csv",
+    "SAVE_DIR": "artifacts/checkpoints"
+  },
+  "analyze": {
+    "MONTH_NPZ": "artifacts/samples/201903_samples.npz",
+    "ADJ_PATH": "data/adjacency_distance_130x130_exp.csv",
+    "CKPT_PATH": "artifacts/checkpoints/stgnn_weather_multihazard_event_v1_24to12.pth",
+    "NORM_PATH": "artifacts/checkpoints/norm_stats_multihazard_event_v1.json",
+    "OUT_DIR": "artifacts/counterfactual",
+    "MONTH": "201903"
+  }
+}

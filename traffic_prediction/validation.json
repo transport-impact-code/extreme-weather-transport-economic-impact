@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-27",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pandas": "3.0.1",
+  "tests_run": 6,
+  "passed": 5,
+  "skipped": 1,
+  "failures": 0,
+  "errors": 0,
+  "original_ast_items_matched": 30,
+  "missing_runtime_dependencies": [
+    "torch",
+    "matplotlib"
+  ],
+  "full_reproduction": false
+}

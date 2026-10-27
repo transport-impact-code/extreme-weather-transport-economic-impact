@@ -1,0 +1,11 @@
+test_label_and_samples_synthetic (test_smoke.DataSmokeTests.test_label_and_samples_synthetic) ... ok
+test_counterfactual_forward_backward (test_smoke.ModelSmokeTests.test_counterfactual_forward_backward) ... skipped 'requires torch and matplotlib (not installed in validation runtime)'
+test_all_sources_compile_and_no_absolute_paths (test_smoke.StaticTests.test_all_sources_compile_and_no_absolute_paths) ... ok
+test_cli_config_without_dependencies (test_smoke.StaticTests.test_cli_config_without_dependencies) ... ok
+test_event_window_difference_preserved (test_smoke.StaticTests.test_event_window_difference_preserved) ... ok
+test_original_ast_fingerprints (test_smoke.StaticTests.test_original_ast_fingerprints) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.012s
+
+OK (skipped=1)
