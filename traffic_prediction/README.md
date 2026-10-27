@@ -85,16 +85,4 @@ Outputs are saved under `artifacts/` by default:
 - Real-weather and counterfactual predictions
 - Impact summaries and comparison plots
 
-## Validation
 
-Run the checks with:
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-Current validation: **5 tests passed and 1 test was skipped** because PyTorch and Matplotlib were unavailable in the validation environment.
-
-Synthetic-data preprocessing checks were completed. Training on the original research data, checkpoint inference, and full experimental reproduction have not been completed.
-
-Raw research data, sample NPZ files, trained checkpoints, and normalization JSON files are not included. See [Test Report](docs/TEST_REPORT.md) for details.
