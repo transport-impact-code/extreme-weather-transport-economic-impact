@@ -1,4 +1,4 @@
-# Scenario Analysis
+# MRIO Analysis
 
 Evaluate the effects of extreme-weather intensity on traffic flows, regional origin–destination (OD) demand, and economic output. Traffic-derived disruptions feed a dynamic multiregional input–output (MRIO) model covering 15 regions, 19 sectors, and 365 days in 2019.
 
