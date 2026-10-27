@@ -1,0 +1,674 @@
+[
+  {
+    "stage": "S2",
+    "file": "S2.py",
+    "original_project_relative_path": "S2提取窗口期间流量.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "S1_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step1_prediction\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step2_daily_node_flows\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "EVENT_WINDOWS_H1": {
+        "201903": [
+          "2019-03-23 00:00:00",
+          "2019-03-27 23:00:00"
+        ],
+        "201908": [
+          "2019-08-10 00:00:00",
+          "2019-08-14 23:00:00"
+        ],
+        "201911": [
+          "2019-11-19 00:00:00",
+          "2019-11-22 23:00:00"
+        ],
+        "201912": [
+          "2019-12-01 00:00:00",
+          "2019-12-08 23:00:00"
+        ]
+      },
+      "EPS": 1e-06,
+      "SKIP_IF_DONE": false
+    },
+    "functions": [
+      "get_s1_npz_path",
+      "safe_ratio",
+      "load_time_matrix",
+      "flatten_npz_to_long",
+      "aggregate_to_hourly",
+      "filter_event_window",
+      "aggregate_to_daily",
+      "summarize_daily",
+      "process_one",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S3",
+    "file": "S3.py",
+    "original_project_relative_path": "S3生成反推边.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "DAILY_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step2_daily_node_flows\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step3_edge_inputs\"",
+      "NODE_EDGE_MAP_CSV": "BASE_DIR /\n    r\"第五阶段_情景分析\\I_Eobs_H7\\scenario_analysis\\step2_node_edge_mapping_check_201912\\node_edge_map_130_checked.csv\"",
+      "EDGE_OBS_CSV": "BASE_DIR /\n    r\"第二阶段\\final_out\\edge_observations_2019.csv\"",
+      "EDGE_TEMPLATE_CSV": "BASE_DIR /\n    r\"第二阶段New\\final_out\\edge_input_daily_with_ferry.csv\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "EPS": 1e-06,
+      "STRICT_NODE_EDGE_MAP": true,
+      "EDGE_AGG_METHOD": "mean"
+    },
+    "functions": [
+      "clean_siteref_series",
+      "ensure_cols",
+      "get_daily_node_path",
+      "prepare_node_edge_map",
+      "prepare_direction_share",
+      "prepare_edge_template",
+      "load_daily_node_flow",
+      "aggregate_edge_daily",
+      "process_one",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S4",
+    "file": "S4.py",
+    "original_project_relative_path": "S4批量跑反推.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "EDGE_INPUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step3_edge_inputs\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step4_od_inversion\"",
+      "OD_BASE_DIR": "BASE_DIR /\n    r\"第二阶段New\\final_out\"",
+      "ACCESS_CSV": "OD_BASE_DIR / \"region15_access_nodes_main_component.csv\"",
+      "INITIAL_REGION_OD_CSV": "OD_BASE_DIR / \"region15_od_seed_from_gdp.csv\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "FLOW_CASES": [
+        "real",
+        "cf"
+      ],
+      "SKIP_IF_DONE": true,
+      "N_ITER": 5,
+      "MAX_UE_ITER": 50,
+      "REL_GAP_TOL": 0.0001,
+      "BPR_ALPHA": 0.15,
+      "BPR_BETA": 4.0,
+      "MIN_CAPACITY": 1e-06,
+      "ALPHA_UPDATE": 0.2,
+      "MIN_FACTOR": 0.5,
+      "MAX_FACTOR": 1.5,
+      "EPS": 1e-06,
+      "DO_GLOBAL_SCALING_EACH_ITER": true,
+      "STOP_IF_FACTOR_MEAN_CLOSE_TO_ONE": 0.01,
+      "STOP_IF_OD_RATIO_CLOSE_TO_ONE": 0.01
+    },
+    "functions": [
+      "ensure_required_columns",
+      "bpr_time",
+      "read_access",
+      "read_initial_region_od",
+      "read_edges",
+      "build_graph",
+      "aon_load",
+      "calc_tstt",
+      "run_ue",
+      "expand_region_to_node_od",
+      "global_scale_region_od",
+      "update_region_od",
+      "run_single_od_inversion",
+      "discover_tasks",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S5",
+    "file": "S5.py",
+    "original_project_relative_path": "S5补对角线.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "OD_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step4_od_inversion\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step5_od_filled_diag\"",
+      "REGION_ORDER_CSV": "BASE_DIR /\n    r\"第二阶段New\\final_out\\region15_od_seed_from_gdp.csv\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "FLOW_CASES": [
+        "real",
+        "cf"
+      ],
+      "ALPHA": 0.5,
+      "EPS": 1e-06,
+      "SKIP_IF_DONE": false
+    },
+    "functions": [
+      "normalize_region_name",
+      "ensure_cols",
+      "load_region_order",
+      "read_od_long",
+      "long_to_matrix",
+      "matrix_to_long",
+      "fill_diag_transport",
+      "get_input_path",
+      "get_output_dir",
+      "discover_tasks",
+      "process_one",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S6",
+    "file": "S6.py",
+    "original_project_relative_path": "S6冲击.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "S5_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step5_od_filled_diag\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step6_capacity_factor\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "EPS": 1e-06,
+      "MIN_FACTOR": 0.05,
+      "CLIP_GAIN_TO_ZERO": true,
+      "REGIONAL_FACTOR_MODE": "out_in",
+      "SKIP_IF_DONE": false
+    },
+    "functions": [
+      "normalize_region_name",
+      "ensure_cols",
+      "read_od_long",
+      "long_to_matrix",
+      "matrix_to_long",
+      "get_region_order_from_one_file",
+      "get_s5_file",
+      "get_out_dir",
+      "discover_tasks",
+      "compute_regional_factor",
+      "process_one",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S7",
+    "file": "S7.py",
+    "original_project_relative_path": "S7每一期OD.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "S6_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step6_capacity_factor\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step7_TT_series\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "EPS": 1e-06,
+      "SKIP_IF_DONE": false
+    },
+    "functions": [
+      "normalize_region_name",
+      "ensure_cols",
+      "discover_tasks_one_intensity",
+      "read_regional_factor",
+      "read_matrix",
+      "get_region_order_from_first_task",
+      "matrix_to_long",
+      "save_region_wide_csv",
+      "process_one_intensity",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S8",
+    "file": "S8.py",
+    "original_project_relative_path": "S8每个变化表.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "S7_ROOT": "SCENARIO_ROOT /\n    r\"Intensity_step7_TT_series\"",
+      "OUT_ROOT": "SCENARIO_ROOT /\n    rf\"Intensity_step8_annual_365_VA_TT_{H_NAME}_eta{ETA:g}\"",
+      "MRIO_PATH_CANDIDATES": "[\n    BASE_DIR / r\"第三阶段\\MRIO_15regions_19sectors_FULL.csv\",\n    BASE_DIR / r\"MRIO_15regions_19sectors_FULL.csv\",\n    BASE_DIR / r\"第三阶段迁移\\MRIO_15regions_19sectors_FULL.csv\",\n]"
+    },
+    "literal_parameters_original": {
+      "YEAR": 2019,
+      "TT_ANNUAL": 365,
+      "RR": 15,
+      "NN": 19,
+      "H_NAME": "H1",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "ETA": 3.5,
+      "EPS": 1e-06,
+      "USE_TRANSPORT_FACTOR_FLOOR": false,
+      "TRANSPORT_FACTOR_FLOOR": 0.05,
+      "USE_NATIONAL_COMMON_SHOCK": false
+    },
+    "functions": [
+      "normalize_region_name",
+      "resolve_mrio_path",
+      "read_mrio_inputs",
+      "find_transport_sector",
+      "build_annual_time_index",
+      "append_label",
+      "infer_event_name",
+      "load_s7_intensity",
+      "align_factor_to_mrio_regions",
+      "compute_effective_factor",
+      "build_one_intensity_annual",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S9",
+    "file": "S9.py",
+    "original_project_relative_path": "S9动态模拟最新.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "INPUT_ROOT_CANDIDATES": "[\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H0_eta3.5\",\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H1_eta3.5\",\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_eta3.5\",\n]",
+      "INPUT_ROOT": "None",
+      "STOCK_DAYS_CSV": "SCENARIO_ROOT /\n    r\"库存\\sector_stock_days_AES2019_middle\\sector_stock_days_for_model.csv\""
+    },
+    "literal_parameters_original": {
+      "INPUT_ROOT": null,
+      "RUN_TAG": "dynamic_mrio_clean_AES2019_middle_sector_major",
+      "H_NAME": "H0",
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "RR": 15,
+      "NN": 19,
+      "TT": 365,
+      "EPS": 1e-09,
+      "DAYS_PER_YEAR": 365.0,
+      "KEY_SHARE_CUTOFF": 0.05,
+      "MIN_KEY_CATEGORIES": 3,
+      "MAX_KEY_CATEGORIES": 8,
+      "KEY_MODE": "share",
+      "PLOT_FIGURES": true
+    },
+    "functions": [
+      "read_name_csv",
+      "get_impact_mask",
+      "load_mrio_inputs",
+      "load_sector_stock_days",
+      "get_sector_index_for_activity",
+      "get_region_index_for_activity",
+      "aggregate_inputs_by_supplier_sector",
+      "build_mat_ezz",
+      "disaggregate_stock_gap_to_original_suppliers",
+      "build_key_input_mask",
+      "dynamic_mrio_simulation",
+      "summarize_and_save",
+      "run_one_intensity",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S9_inventory_legacy",
+    "file": "S9_inventory_legacy.py",
+    "original_project_relative_path": "库存.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "AES_PATH": "Path(\n    r\"<ORIGINAL_DATA_ROOT>\\第五阶段情景分析new\\I_H0\\annual-enterprise-survey-2019-financial-year-provisional-csv.csv\"\n)",
+      "MRIO_PATH": "BASE_DIR /\n    r\"第三阶段\\MRIO_15regions_19sectors_FULL.csv\"",
+      "OUT_DIR": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\\sector_stock_days_AES2019_30\""
+    },
+    "literal_parameters_original": {
+      "RR": 15,
+      "NN": 19,
+      "DAYS_PER_YEAR": 365.0,
+      "USE_CLIPPED_STOCK_DAYS_FOR_MODEL": true,
+      "MIN_STOCK_DAYS": 1.0,
+      "MAX_STOCK_DAYS": 30.0,
+      "DEFAULT_SERVICE_STOCK_DAYS": 7.0,
+      "MRIO_TO_AES_CODES": {
+        "Accommodation": [
+          "GH211"
+        ],
+        "Food and beverage services": [
+          "GH212"
+        ],
+        "Retail Trade": [
+          "GH11",
+          "GH12",
+          "GH13"
+        ],
+        "Agriculture": [
+          "AA11",
+          "AA12",
+          "AA13",
+          "AA14",
+          "AA32"
+        ],
+        "Forestry, Fishing, and Mining": [
+          "AA21",
+          "AA31",
+          "BB"
+        ],
+        "Manufacturing": [
+          "CC"
+        ],
+        "Electricity, Gas, Water, and Waste services": [
+          "DD"
+        ],
+        "Construction": [
+          "EE"
+        ],
+        "Wholesale Trade": [
+          "FF"
+        ],
+        "Transport, Postal and Warehousing": [
+          "II"
+        ],
+        "Financial and Insurance Services": [
+          "KK"
+        ],
+        "Rental, Hiring and Real Estate Services": [
+          "LL"
+        ],
+        "Professional, Scientific, and Technical Services": [
+          "MN11"
+        ],
+        "Administrative and Support Services": [
+          "MN21"
+        ],
+        "Public Administration and Safety": [
+          "OO"
+        ],
+        "Education and Training": [
+          "PP"
+        ],
+        "Health Care and Social Assistance": [
+          "QQ"
+        ],
+        "Information Media, Telecommunications and Other Services": [
+          "JJ",
+          "RS"
+        ],
+        "Owner-Occupied Property Operation": [
+          "LL"
+        ]
+      }
+    },
+    "functions": [
+      "clean_value_to_float",
+      "read_aes_closing_stocks",
+      "read_mrio_inputs",
+      "get_stock_by_codes",
+      "compute_sector_intermediate_inputs",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S9_inventory_variants",
+    "file": "S9_inventory_variants.py",
+    "original_project_relative_path": "平均库存值.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "BASE_STOCK_CSV": "SCENARIO_ROOT /\n    r\"sector_stock_days_AES2019\\sector_stock_days_for_model.csv\"",
+      "OUT_LOW_DIR": "SCENARIO_ROOT /\n    r\"sector_stock_days_AES2019_low\"",
+      "OUT_MIDDLE_DIR": "SCENARIO_ROOT /\n    r\"sector_stock_days_AES2019_middle\"",
+      "OUT_HIGH_DIR": "SCENARIO_ROOT /\n    r\"sector_stock_days_AES2019_high\""
+    },
+    "literal_parameters_original": {
+      "LOW_MULTIPLIER": 0.5,
+      "LOW_MIN_DAYS": 1.0,
+      "LOW_MAX_DAYS": 90.0,
+      "MIDDLE_MULTIPLIER": 1.0,
+      "MIDDLE_MIN_DAYS": 1.0,
+      "MIDDLE_MAX_DAYS": 180.0,
+      "HIGH_MULTIPLIER": 2.0,
+      "HIGH_MIN_DAYS": 1.0,
+      "HIGH_MAX_DAYS": 180.0
+    },
+    "functions": [
+      "make_inventory_scenario",
+      "safe_select_columns",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S1",
+    "file": "S1.py",
+    "original_project_relative_path": "S1生成三种强度.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SAMPLE_ROOT": "BASE_DIR /\n    r\"有天气new\\samples_extreme_multihazard_event_v1\"",
+      "ADJ_PATH": "BASE_DIR /\n    r\"data\\adjacency_distance_130x130_exp.csv\"",
+      "CKPT_PATH": "BASE_DIR /\n    r\"有天气new\\ckpt_extreme_multihazard_event_v1\"\n    r\"\\stgnn_weather_multihazard_event_v1_24to12.pth\"",
+      "NORM_PATH": "BASE_DIR /\n    r\"有天气new\\ckpt_extreme_multihazard_event_v1\"\n    r\"\\norm_stats_multihazard_event_v1.json\"",
+      "OUT_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"\n    r\"\\Intensity_step1_prediction\""
+    },
+    "literal_parameters_original": {
+      "H_NAME": "H1",
+      "MONTHS": [
+        "201903",
+        "201908",
+        "201911",
+        "201912"
+      ],
+      "EVENT_WINDOWS_H1": {
+        "201903": [
+          "2019-03-23 00:00:00",
+          "2019-03-27 23:00:00"
+        ],
+        "201908": [
+          "2019-08-10 00:00:00",
+          "2019-08-14 23:00:00"
+        ],
+        "201911": [
+          "2019-11-19 00:00:00",
+          "2019-11-22 23:00:00"
+        ],
+        "201912": [
+          "2019-12-01 00:00:00",
+          "2019-12-08 23:00:00"
+        ]
+      },
+      "INTENSITY_SCENARIOS": {
+        "I1": 1.0,
+        "I2": 2.0,
+        "I3": 3.0
+      },
+      "NUM_NODES": 130,
+      "BATCH_SIZE": 64,
+      "ADJ_ALREADY_NORMALIZED": true,
+      "WEATHER_FORCE": 5.0,
+      "CLIP_FLOW_TO_ZERO": true,
+      "WEATHER_VAR_NAMES": [
+        "TEMP",
+        "PRCP",
+        "WDSP",
+        "RH"
+      ],
+      "NORMAL_PRCP": 0.0,
+      "NORMAL_RH": 70.0,
+      "CLIP_PRCP_NONNEGATIVE": true,
+      "CLIP_WDSP_NONNEGATIVE": true,
+      "CLIP_RH_0_100": true,
+      "PLOT_FIGURES": true
+    },
+    "functions": [
+      "load_norm",
+      "load_adj",
+      "denorm_flow",
+      "build_base_times",
+      "build_future_time_matrix",
+      "build_future_time_axis",
+      "build_time_mask_np",
+      "make_event_flag_torch",
+      "apply_weather_physical_constraints_torch",
+      "build_normal_raw_tensor",
+      "save_plot",
+      "run_one_month",
+      "main"
+    ],
+    "classes": [
+      "TrafficMonthDataset"
+    ]
+  },
+  {
+    "stage": "model",
+    "file": "model.py",
+    "original_project_relative_path": "model.py",
+    "paths_original": {},
+    "literal_parameters_original": {},
+    "functions": [],
+    "classes": [
+      "GCNLayer",
+      "STGNNWeatherSeq2Seq"
+    ]
+  },
+  {
+    "stage": "S9_prepare",
+    "file": "S9_prepare.py",
+    "original_project_relative_path": "库存/统一MRIO顺序.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "STEP8_ROOT_CANDIDATES": "[\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H0_eta3.5\",\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H1_eta3.5\",\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_eta3.5\",\n]",
+      "MRIO_PATH_CANDIDATES": "[\n    BASE_DIR / r\"第三阶段\\MRIO_15regions_19sectors_FULL.csv\",\n    BASE_DIR / r\"MRIO_15regions_19sectors_FULL.csv\",\n    BASE_DIR / r\"第三阶段迁移\\MRIO_15regions_19sectors_FULL.csv\",\n]"
+    },
+    "literal_parameters_original": {
+      "RR": 15,
+      "NN": 19,
+      "INTENSITY_SCENARIOS": [
+        "I1",
+        "I2",
+        "I3"
+      ]
+    },
+    "functions": [
+      "resolve_existing_path",
+      "read_name_csv",
+      "read_raw_mrio_activity_order",
+      "infer_order",
+      "build_sector_major_raw_indices",
+      "check_transport_positions",
+      "reorder_arrays_to_sector_major",
+      "make_activity_mapping",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "stage": "S9_inventory",
+    "file": "S9_inventory.py",
+    "original_project_relative_path": "库存/计算初始行业库存.py",
+    "paths_original": {
+      "BASE_DIR": "Path(r\"<ORIGINAL_DATA_ROOT>\")",
+      "SCENARIO_ROOT": "BASE_DIR /\n    r\"第五阶段情景分析new\\I_H0\"",
+      "AES_PATH": "SCENARIO_ROOT /\n    r\"annual-enterprise-survey-2019-financial-year-provisional-csv.csv\"",
+      "SECTOR_NAMES_CANDIDATES": "[\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H1_eta3.5\\I1\\MRIO模型\\sector_names.csv\",\n    SCENARIO_ROOT / r\"Intensity_step8_annual_365_VA_TT_H0_eta3.5\\I1\\MRIO模型\\sector_names.csv\",\n    BASE_DIR / r\"第三阶段\\MRIO模型\\sector_names.csv\",\n]",
+      "OUT_DIR": "SCENARIO_ROOT /\n    r\"库存\\sector_stock_days_AES2019_middle\""
+    },
+    "literal_parameters_original": {
+      "YEAR": 2019,
+      "AES_LEVEL": "Level 1",
+      "MIN_STOCK_DAYS": 1.0,
+      "MAX_STOCK_DAYS": 90.0,
+      "USE_MEDIAN_FOR_MISSING": true
+    },
+    "functions": [
+      "clean_value",
+      "read_sector_names",
+      "norm_text",
+      "first_match_sector_to_aes",
+      "build_aes_level1_stock_days",
+      "build_mrio_sector_stock_days",
+      "main"
+    ],
+    "classes": []
+  }
+]

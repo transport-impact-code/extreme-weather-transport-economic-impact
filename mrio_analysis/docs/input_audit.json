@@ -1,0 +1,58 @@
+{
+  "mrio": {
+    "activity_count": 285,
+    "region_count": 15,
+    "sector_count": 19,
+    "all_285_column_labels_checked": true,
+    "row_column_labels_equal": true,
+    "order": "region-major"
+  },
+  "s7": {
+    "I1": {
+      "factor_shape": [
+        21,
+        15
+      ],
+      "date_rows": 21,
+      "duplicate_dates": 0,
+      "missing_official_dates": [
+        "2019-12-01"
+      ],
+      "unexpected_dates": [],
+      "finite_factors": true
+    },
+    "I2": {
+      "factor_shape": [
+        21,
+        15
+      ],
+      "date_rows": 21,
+      "duplicate_dates": 0,
+      "missing_official_dates": [
+        "2019-12-01"
+      ],
+      "unexpected_dates": [],
+      "finite_factors": true
+    },
+    "I3": {
+      "factor_shape": [
+        21,
+        15
+      ],
+      "date_rows": 21,
+      "duplicate_dates": 0,
+      "missing_official_dates": [
+        "2019-12-01"
+      ],
+      "unexpected_dates": [],
+      "finite_factors": true
+    }
+  },
+  "stock": {
+    "rows": 19,
+    "finite_positive": true,
+    "min_days": 1.8089207048458151,
+    "max_days": 90.0,
+    "mean_days": 36.18420502168331
+  }
+}
