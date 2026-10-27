@@ -1,0 +1,249 @@
+{
+  "function_body_checks": [
+    {
+      "module": "event",
+      "functions": 11,
+      "exact_ast_match": true
+    },
+    {
+      "module": "baseline",
+      "functions": 10,
+      "exact_ast_match": true
+    }
+  ],
+  "historical_results": [
+    {
+      "file": "2019-12-02\\real\\edge_flow_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\edge_flow_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\edge_flow_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\edge_flow_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\edge_flow_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\iteration_summary.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\node_od_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\node_od_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\node_od_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\node_od_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\node_od_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_factor_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_factor_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_factor_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_factor_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_factor_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_final.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\region_od_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\ue_log_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\ue_log_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\ue_log_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\ue_log_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\real\\ue_log_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\edge_flow_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\edge_flow_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\edge_flow_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\edge_flow_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\edge_flow_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\iteration_summary.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\node_od_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\node_od_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\node_od_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\node_od_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\node_od_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_factor_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_factor_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_factor_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_factor_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_factor_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_final.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\region_od_iter5.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\ue_log_iter1.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\ue_log_iter2.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\ue_log_iter3.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\ue_log_iter4.csv",
+      "match": true
+    },
+    {
+      "file": "2019-12-02\\cf\\ue_log_iter5.csv",
+      "match": true
+    }
+  ],
+  "environment": {
+    "pandas": "2.2.3",
+    "numpy": "2.1.3"
+  },
+  "portable_package_validation": {
+    "date": "2026-10-27",
+    "input_source": "bundled data/ only",
+    "cases": [
+      "2019-12-02/real",
+      "2019-12-02/cf"
+    ],
+    "bundled_sha256_checks": 71,
+    "historical_csv_comparisons": 54,
+    "rtol": 1e-10,
+    "atol": 1e-10,
+    "passed": true
+  }
+}

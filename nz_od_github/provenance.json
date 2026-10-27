@@ -1,0 +1,42 @@
+[
+  {
+    "module": "event",
+    "source": "第三阶段/S4批量跑反推.py",
+    "sha256": "2c6c7881a785c74c6848971e9362f4c687ccad631d6b0f88b170cc83ef7e4f8a",
+    "functions": [
+      "ensure_required_columns",
+      "bpr_time",
+      "build_graph",
+      "aon_load",
+      "calc_tstt",
+      "run_ue",
+      "expand_region_to_node_od",
+      "global_scale_region_od",
+      "update_region_od",
+      "run_single_od_inversion",
+      "main"
+    ]
+  },
+  {
+    "module": "baseline",
+    "source": "第二阶段New/S9迭代.py",
+    "sha256": "af25677fea0b089242e007b5b1a86fdbcb153758a38738e9c3191477331df5ee",
+    "functions": [
+      "ensure_required_columns",
+      "bpr_time",
+      "build_graph",
+      "aon_load",
+      "calc_tstt",
+      "run_ue",
+      "expand_region_to_node_od",
+      "global_scale_region_od",
+      "update_region_od",
+      "main"
+    ]
+  },
+  {
+    "reference": "S6",
+    "source": "第二阶段New/S6UE.py",
+    "sha256": "2c42f87a9ad8dc93204c934c88521fbe6d5bd6154dd816c11ea233248b5abb5c"
+  }
+]
