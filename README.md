@@ -64,7 +64,7 @@ Recorded research-module validation environments include:
 
 | Module | Python | NumPy | pandas |
 |---|---|---|---|
-| OD estimation | Not recorded in the validation file | 2.1.3 | 2.2.3 |
+| OD estimation | 3.12.14 | 2.3.5 | 3.0.1 |
 | MRIO analysis | 3.12.14 | 2.3.5 | 3.0.1 |
 
 These versions describe module-specific validation. They do not represent a single validated environment for the complete workflow. Additional validation details are provided in the corresponding modules.
