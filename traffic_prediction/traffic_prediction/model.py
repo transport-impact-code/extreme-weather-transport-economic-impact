@@ -12,12 +12,10 @@ class GCNLayer(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x, A_norm):
-
         x = torch.matmul(A_norm, x)
         x = self.linear(x)
         x = F.relu(x)
         x = self.dropout(x)
-
         return x
 
 
@@ -36,6 +34,7 @@ class STGNNWeatherSeq2Seq(nn.Module):
         dec_hidden=128,
         weather_hidden=32,
         dropout=0.1,
+        weather_force=5.0,
     ):
         super().__init__()
 
@@ -44,19 +43,16 @@ class STGNNWeatherSeq2Seq(nn.Module):
         self.Tout = Tout
         self.flow_dim = flow_dim
 
-        # =================
-        # Spatial GCN
-        # =================
+        # Compatibility only; does not affect predictions.
+        self.weather_force = weather_force
 
+        # Spatial GCN
         self.gcn1 = GCNLayer(hist_dim, gcn_hidden, dropout)
         self.gcn2 = GCNLayer(gcn_hidden, gcn_hidden, dropout)
 
         self.ln_gcn = nn.LayerNorm(gcn_hidden)
 
-        # =================
         # Encoder
-        # =================
-
         self.enc_gru = nn.GRU(
             input_size=gcn_hidden,
             hidden_size=enc_hidden,
@@ -65,10 +61,7 @@ class STGNNWeatherSeq2Seq(nn.Module):
 
         self.ln_ctx = nn.LayerNorm(enc_hidden)
 
-        # =================
         # Decoder modules
-        # =================
-
         self.flow_proj = nn.Sequential(
             nn.Linear(flow_dim, dec_hidden),
             nn.ReLU(),
@@ -89,7 +82,6 @@ class STGNNWeatherSeq2Seq(nn.Module):
         )
 
         self.out_head = nn.Linear(dec_hidden, flow_dim)
-
         self.dropout = nn.Dropout(dropout)
 
     def forward(
@@ -99,91 +91,89 @@ class STGNNWeatherSeq2Seq(nn.Module):
         A_norm,
         y_true=None,
         teacher_forcing_ratio=0.0,
+        x_future_raw=None,
     ):
+        # x_future_raw is accepted for compatibility only.
+        B, Tin, N, _ = x_hist.shape
 
-        B, Tin, N, F = x_hist.shape
-
-        # =================
         # Spatial GCN
-        # =================
-
         gcn_seq = []
 
         for t in range(Tin):
-
             xt = x_hist[:, t]
 
             ht = self.gcn1(xt, A_norm)
             ht = self.gcn2(ht, A_norm)
-
             ht = self.ln_gcn(ht)
 
             gcn_seq.append(ht)
 
         gcn_out = torch.stack(gcn_seq, dim=1)
 
-        # =================
         # Encoder
-        # =================
-
         Hg = gcn_out.shape[-1]
 
         enc_in = (
             gcn_out
-            .permute(0,2,1,3)
+            .permute(0, 2, 1, 3)
             .contiguous()
-            .view(B*N, Tin, Hg)
+            .view(B * N, Tin, Hg)
         )
 
         _, h_last = self.enc_gru(enc_in)
 
         ctx = h_last.squeeze(0)
-
         ctx = self.ln_ctx(ctx)
 
-        # =================
-        # Decoder init
-        # =================
-
+        # Decoder initialization
         ctx_emb = torch.tanh(self.ctx_to_dec(ctx))
-
         h = ctx_emb
 
-        prev_flow = x_hist[:, -1, :, 0:1].contiguous().view(B*N, self.flow_dim)
+        prev_flow = (
+            x_hist[:, -1, :, 0:1]
+            .contiguous()
+            .view(B * N, self.flow_dim)
+        )
 
         outputs = []
 
         for k in range(self.Tout):
-
             flow_emb = self.flow_proj(prev_flow)
 
-            weather_k = x_future[:, k].contiguous().view(B*N, -1)
+            weather_k = (
+                x_future[:, k]
+                .contiguous()
+                .view(B * N, -1)
+            )
             weather_emb = self.weather_proj(weather_k)
 
             dec_in = torch.cat(
                 [flow_emb, weather_emb, ctx_emb],
-                dim=-1
+                dim=-1,
             )
 
             h = self.dec_cell(dec_in, h)
-
             h = self.dropout(h)
 
             pred = self.out_head(h)
 
-            outputs.append(pred.view(B,N,self.flow_dim))
+            outputs.append(
+                pred.view(B, N, self.flow_dim)
+            )
 
-            if (y_true is not None) and (teacher_forcing_ratio>0):
-
+            if (
+                y_true is not None
+                and teacher_forcing_ratio > 0
+            ):
                 if torch.rand(1).item() < teacher_forcing_ratio:
-                    prev_flow = y_true[:,k].contiguous().view(B*N,self.flow_dim)
+                    prev_flow = (
+                        y_true[:, k]
+                        .contiguous()
+                        .view(B * N, self.flow_dim)
+                    )
                 else:
                     prev_flow = pred
-
             else:
-
                 prev_flow = pred
 
-        y_hat = torch.stack(outputs, dim=1)
-
-        return y_hat
+        return torch.stack(outputs, dim=1)
