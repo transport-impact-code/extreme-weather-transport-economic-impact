@@ -71,8 +71,6 @@ Two predictions are generated using the same trained model:
 - **Real-weather prediction:** uses the original weather inputs.
 - **Counterfactual prediction:** replaces selected raw weather values with reference weather conditions.
 
-The normalized future-weather input, `x_future`, remains unchanged. Only selected values in `x_future_raw` are replaced.
-
 ## Outputs
 
 Outputs are saved under `artifacts/` by default:
